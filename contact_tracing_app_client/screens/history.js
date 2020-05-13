@@ -21,24 +21,37 @@ export default function History({navigation}) {
 
       <View style={{marginVertical: 20}}>
         <View
-          style={{borderColor: 'black', borderWidth: 2, flexDirection: 'row'}}>
+          style={{
+            borderColor: 'gray',
+            borderWidth: 2,
+            flexDirection: 'row',
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+            backgroundColor: '#cccccc',
+          }}>
           <Text
             style={{
+              borderColor: 'gray',
               width: '50%',
               paddingVertical: 5,
               textAlign: 'center',
-              borderRightWidth: 1,
+              borderRightWidth: 2,
+              fontWeight: 'bold',
+              fontSize: 16,
             }}>
             Date
           </Text>
           <Text
             style={{
+              borderColor: 'gray',
               width: '50%',
               paddingVertical: 5,
               textAlign: 'center',
               borderLeftWidth: 1,
+              fontWeight: 'bold',
+              fontSize: 16,
             }}>
-            ID
+            User ID
           </Text>
         </View>
         <FlatList
@@ -65,8 +78,8 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   listContainer: {
-    borderColor: 'black',
-    borderWidth: 1,
+    borderColor: 'gray',
+    borderWidth: 2,
     flexDirection: 'row',
     borderTopWidth: 0,
   },
@@ -74,12 +87,16 @@ const styles = StyleSheet.create({
     width: '50%',
     paddingVertical: 5,
     textAlign: 'center',
+    borderLeftWidth: 1,
+    borderColor: 'gray',
   },
   listItemfst: {
     width: '50%',
     paddingVertical: 5,
     textAlign: 'center',
-    borderRightWidth: 1,
+    borderRightWidth: 2,
+
+    borderColor: 'gray',
   },
   uploadbtn: {
     backgroundColor: 'gray',

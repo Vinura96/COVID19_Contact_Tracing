@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 5,
     paddingTop: 10,
+    marginBottom: 50,
   },
   numberBox: {
     width: '40%',

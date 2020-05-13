@@ -92,8 +92,8 @@ export default function RootBottomTabNavigator() {
         },
       })}
       tabBarOptions={{
-        activeTintColor: 'black',
-        inactiveTintColor: 'gray',
+        activeTintColor: '#203e79',
+        inactiveTintColor: '#7294da',
       }}>
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="History" component={History} />

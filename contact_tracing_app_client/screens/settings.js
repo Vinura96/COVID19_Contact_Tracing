@@ -7,12 +7,18 @@ import {Context} from '../backend/context';
 import FlatButton from '../shared/button';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import InfectedUserReportModal from './infectedUserReport';
 
 export default function Settings(props) {
   const {isLoggedIn, setLogout} = React.useContext(Context);
+  const [isInfectedUserModalOpen, setInfectedUserModalOpen] = useState(false);
 
   return (
     <ScrollView style={styles.container}>
+      <InfectedUserReportModal
+        isInfectedUserModalOpen={isInfectedUserModalOpen}
+        setInfectedUserModalOpen={setInfectedUserModalOpen}
+      />
       <View style={{marginBottom: 20}}>
         {isLoggedIn ? (
           <View style={{alignItems: 'center'}}>
@@ -35,7 +41,7 @@ export default function Settings(props) {
       </View>
       {isLoggedIn && (
         <View>
-          <TouchableOpacity onPress={() => console.log('object')}>
+          <TouchableOpacity onPress={() => setInfectedUserModalOpen(true)}>
             <Card style={{...styles.logOutbtn, backgroundColor: 'orange'}}>
               <Text style={styles.logoutButtonText}>Iam Infected</Text>
             </Card>

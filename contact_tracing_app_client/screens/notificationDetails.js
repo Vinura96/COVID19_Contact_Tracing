@@ -87,7 +87,7 @@ export default function NotificationModal({
                   contact you.
                 </Text>
               </View>
-              <View style={styles.listItem}>
+              <View style={{...styles.listItem, marginTop: 50}}>
                 <Text style={styles.bodyText}>
                   ** Please send us your current location.
                 </Text>

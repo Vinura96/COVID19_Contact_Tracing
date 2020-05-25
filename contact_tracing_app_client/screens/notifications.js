@@ -3,6 +3,7 @@ import {StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
 import Card from '../shared/card';
 import NotificationModal from './notificationDetails';
 
+import {Header} from 'react-native-elements';
 import Entypo from 'react-native-vector-icons/Entypo';
 
 export default function Notifications() {
@@ -21,47 +22,68 @@ export default function Notifications() {
   ]);
   const [isNotificationModalOpen, setNotificationModalOpen] = useState(false);
   return (
-    <View style={styles.container}>
-      <NotificationModal
-        notification=""
-        isNotificationModalOpen={isNotificationModalOpen}
-        setNotificationModalOpen={setNotificationModalOpen}
+    <React.Fragment>
+      <Header
+        centerComponent={{
+          text: 'Contact Tracker',
+          style: {
+            color: '#fff',
+            fontSize: 20,
+            fontWeight: 'bold',
+            marginBottom: 25,
+          },
+        }}
+        containerStyle={{
+          backgroundColor: '#3D6DCC',
+          justifyContent: 'space-around',
+          height: 50,
+        }}
       />
-      <Text style={{fontWeight: 'bold', fontSize: 20, padding: 10}}>
-        Notifications
-      </Text>
-      <View>
-        <FlatList
-          data={notifications}
-          renderItem={({item}) => {
-            return (
-              <Card>
-                <TouchableOpacity
-                  onPress={() => {
-                    setNotificationModalOpen(true);
-                  }}>
-                  <View>
-                    <Text style={{textAlign: 'justify'}}>
-                      <Text>
-                        <Entypo name="warning" size={18} color="#ffcc00" />
-                      </Text>
-                      <Text> You have expose to a corona infected person.</Text>
-                    </Text>
-                  </View>
-                  <View style={styles.notificationCard}>
-                    <View style={styles.notificationCardView}>
-                      <Text style={styles.notificationCardDate}>
-                        2020/10/10 | 11:10:40
+      <View style={styles.container}>
+        <NotificationModal
+          notification=""
+          isNotificationModalOpen={isNotificationModalOpen}
+          setNotificationModalOpen={setNotificationModalOpen}
+        />
+        <Text style={{fontWeight: 'bold', fontSize: 20, padding: 10}}>
+          Notifications
+        </Text>
+        <View>
+          <FlatList
+            data={notifications}
+            renderItem={({item}) => {
+              return (
+                <Card>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setNotificationModalOpen(true);
+                    }}>
+                    <View>
+                      <Text style={{textAlign: 'justify'}}>
+                        <Text>
+                          <Entypo name="warning" size={18} color="#ffcc00" />
+                        </Text>
+                        <Text>
+                          {' '}
+                          You have expose to a corona infected person.
+                        </Text>
                       </Text>
                     </View>
-                  </View>
-                </TouchableOpacity>
-              </Card>
-            );
-          }}
-        />
+                    <View style={styles.notificationCard}>
+                      <View style={styles.notificationCardView}>
+                        <Text style={styles.notificationCardDate}>
+                          2020/10/10 | 11:10:40
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </Card>
+              );
+            }}
+          />
+        </View>
       </View>
-    </View>
+    </React.Fragment>
   );
 }
 

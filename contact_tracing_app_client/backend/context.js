@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 const Context = React.createContext();
 
 class ContextProvider extends Component {
-  state = {};
+  state = {isLoggedIn: true};
   componentDidMount() {}
   componentWillUnmount() {}
 
@@ -12,6 +12,12 @@ class ContextProvider extends Component {
       <Context.Provider
         value={{
           ...this.state,
+          setLoggedIn: () => {
+            this.setState({isLoggedIn: true});
+          },
+          setLogout: () => {
+            this.setState({isLoggedIn: false});
+          },
         }}>
         {this.props.children}
       </Context.Provider>

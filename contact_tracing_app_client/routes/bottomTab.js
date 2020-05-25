@@ -4,10 +4,10 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {Text, View} from 'react-native';
-import Settings from '../screens/settings';
 import Home from '../screens/home';
 import History from '../screens/history';
 import Notifications from '../screens/notifications';
+import SettingsStack from './settingsStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -98,7 +98,7 @@ export default function RootBottomTabNavigator() {
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="History" component={History} />
       <Tab.Screen name="Notifications" component={Notifications} />
-      <Tab.Screen name="Settings" component={Settings} />
+      <Tab.Screen name="Settings" component={SettingsStack} />
     </Tab.Navigator>
   );
 }

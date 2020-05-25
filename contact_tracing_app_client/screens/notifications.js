@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
 import Card from '../shared/card';
+import NotificationModal from './notificationDetails';
 
 import Entypo from 'react-native-vector-icons/Entypo';
 
@@ -18,8 +19,14 @@ export default function Notifications() {
     9,
     10,
   ]);
+  const [isNotificationModalOpen, setNotificationModalOpen] = useState(false);
   return (
     <View style={styles.container}>
+      <NotificationModal
+        notification=""
+        isNotificationModalOpen={isNotificationModalOpen}
+        setNotificationModalOpen={setNotificationModalOpen}
+      />
       <Text style={{fontWeight: 'bold', fontSize: 20, padding: 10}}>
         Notifications
       </Text>
@@ -29,7 +36,10 @@ export default function Notifications() {
           renderItem={({item}) => {
             return (
               <Card>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    setNotificationModalOpen(true);
+                  }}>
                   <View>
                     <Text style={{textAlign: 'justify'}}>
                       <Text>

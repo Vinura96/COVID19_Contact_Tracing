@@ -4,12 +4,33 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Header} from 'react-native-elements';
 
 export default function History({navigation}) {
-  const [contactHistory, setContactHistory] = useState([0, 1, 2, 3]);
+  const [contactHistory, setContactHistory] = useState([
+    0,
+    1,
+    2,
+    3,
+    0,
+    1,
+    2,
+    3,
+    0,
+    1,
+    2,
+    3,
+    0,
+    1,
+    2,
+    3,
+    0,
+    1,
+    2,
+    3,
+  ]);
   return (
     <React.Fragment>
       <Header
         centerComponent={{
-          text: 'Contact Tracker',
+          text: 'History',
           style: {
             color: '#fff',
             fontSize: 20,
@@ -41,11 +62,12 @@ export default function History({navigation}) {
           <View
             style={{
               borderColor: 'gray',
-              borderWidth: 2,
+              // borderWidth: 2,
               flexDirection: 'row',
               borderTopLeftRadius: 10,
               borderTopRightRadius: 10,
-              backgroundColor: '#cccccc',
+              borderBottomWidth: 2,
+              // backgroundColor: '#cccccc',
             }}>
             <Text
               style={{
@@ -53,9 +75,10 @@ export default function History({navigation}) {
                 width: '50%',
                 paddingVertical: 5,
                 textAlign: 'center',
-                borderRightWidth: 2,
+                borderRightWidth: 1,
                 fontWeight: 'bold',
                 fontSize: 16,
+                paddingTop: 10,
               }}>
               Date
             </Text>
@@ -65,9 +88,10 @@ export default function History({navigation}) {
                 width: '50%',
                 paddingVertical: 5,
                 textAlign: 'center',
-                borderLeftWidth: 1,
+                // borderLeftWidth: 1,
                 fontWeight: 'bold',
                 fontSize: 16,
+                paddingTop: 10,
               }}>
               User ID
             </Text>
@@ -98,22 +122,23 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     borderColor: 'gray',
-    borderWidth: 2,
+    // borderWidth: 2,
     flexDirection: 'row',
     borderTopWidth: 0,
+    borderBottomWidth: 1,
   },
   listItemtwo: {
     width: '50%',
-    paddingVertical: 5,
+    paddingVertical: 10,
     textAlign: 'center',
-    borderLeftWidth: 1,
+    // borderLeftWidth: 1,
     borderColor: 'gray',
   },
   listItemfst: {
     width: '50%',
-    paddingVertical: 5,
+    paddingVertical: 10,
     textAlign: 'center',
-    borderRightWidth: 2,
+    borderRightWidth: 1,
 
     borderColor: 'gray',
   },

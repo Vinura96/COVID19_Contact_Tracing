@@ -52,7 +52,7 @@ export default function SettingsStack() {
       <Stack.Screen
         name="Settings"
         component={Settings}
-        options={{title: 'Contact Tracker'}}
+        options={{title: 'Settings'}}
       />
     </Stack.Navigator>
   );

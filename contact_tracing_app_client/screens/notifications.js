@@ -25,7 +25,7 @@ export default function Notifications() {
     <React.Fragment>
       <Header
         centerComponent={{
-          text: 'Contact Tracker',
+          text: 'Notifications',
           style: {
             color: '#fff',
             fontSize: 20,
@@ -45,9 +45,7 @@ export default function Notifications() {
           isNotificationModalOpen={isNotificationModalOpen}
           setNotificationModalOpen={setNotificationModalOpen}
         />
-        <Text style={{fontWeight: 'bold', fontSize: 20, padding: 10}}>
-          Notifications
-        </Text>
+
         <View>
           <FlatList
             data={notifications}

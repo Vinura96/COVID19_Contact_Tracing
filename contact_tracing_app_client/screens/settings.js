@@ -10,7 +10,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import InfectedUserReportModal from './infectedUserReport';
 
 export default function Settings(props) {
-  const {isLoggedIn, setLogout} = React.useContext(Context);
+  const {isLoggedIn, signOut} = React.useContext(Context);
   const [isInfectedUserModalOpen, setInfectedUserModalOpen] = useState(false);
 
   return (
@@ -114,7 +114,7 @@ export default function Settings(props) {
         </Card>
       </TouchableOpacity>
       {isLoggedIn && (
-        <TouchableOpacity onPress={setLogout}>
+        <TouchableOpacity onPress={signOut}>
           <Card style={{...styles.logOutbtn, marginBottom: 20}}>
             <Text style={styles.logoutButtonText}>Log Out</Text>
           </Card>

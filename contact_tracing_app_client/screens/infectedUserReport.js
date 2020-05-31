@@ -58,9 +58,9 @@ export default function InfectedUserReportModal({
               <Text style={styles.inputtitleText}> Personal Details</Text>
               <Card>
                 <View>
-                  <Text> Kasun Sampath</Text>
+                  <Text>Kasun Sampath</Text>
                   <Text>No:32, Katubedda, Moratuwa.</Text>
-                  <Text> +94761234567</Text>
+                  <Text>+94761234567</Text>
                 </View>
               </Card>
             </View>

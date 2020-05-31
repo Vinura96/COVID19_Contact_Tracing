@@ -10,9 +10,20 @@ import {
 } from 'react-native';
 
 import Card from '../shared/card';
+import database from '@react-native-firebase/database';
+
+import {Context} from '../backend/context';
 
 export default function ProfileSettings({navigation, route}) {
   const [value, onChangeText] = React.useState(null);
+  const {
+    isLoggedIn,
+
+    uid,
+    phone,
+    name,
+    address,
+  } = React.useContext(Context);
 
   const updateName = () => {};
 
@@ -23,33 +34,24 @@ export default function ProfileSettings({navigation, route}) {
           <Text style={styles.titleText}>ID</Text>
           <TextInput
             style={styles.input}
-            placeholder={'KJG5FdsB9'}
+            placeholder={uid}
             placeholderTextColor="gray"
             editable={false}
           />
           <Text style={styles.titleText}>Phone</Text>
           <View style={{flexDirection: 'row'}}>
             <TextInput
+              editable={false}
               style={{...styles.input, ...{flex: 2}}}
-              placeholder="+94761234567"
+              placeholder={phone}
               placeholderTextColor="gray"
-              onChangeText={(text) => onChangeText(text)}
             />
-            <TouchableOpacity
-              style={styles.updateButton}
-              onPress={(Keyboard.dismiss, updateName)}>
-              <Card
-                styleContent={{marginHorizontal: 5, marginVertical: 5}}
-                style={styles.updatebtnCard}>
-                <Text style={styles.updateBtnText}>Edit</Text>
-              </Card>
-            </TouchableOpacity>
           </View>
           <Text style={styles.titleText}>Name</Text>
           <View style={{flexDirection: 'row'}}>
             <TextInput
               style={{...styles.input, ...{flex: 2}}}
-              placeholder="Kasun Sampath"
+              placeholder={name}
               placeholderTextColor="gray"
               onChangeText={(text) => onChangeText(text)}
             />
@@ -67,7 +69,7 @@ export default function ProfileSettings({navigation, route}) {
           <View style={{flexDirection: 'row'}}>
             <TextInput
               style={{...styles.input, ...{flex: 2}}}
-              placeholder="No:32, Katubedda, Moratuwa."
+              placeholder={address}
               placeholderTextColor="gray"
               multiline={true}
               height={100}

@@ -24,6 +24,7 @@ export default function Auth() {
     isNewUser,
     uid,
     signOut,
+    startingApp,
     updateUserData,
     user,
     authLoading,
@@ -105,7 +106,10 @@ export default function Auth() {
   }
 
   return (
-    <Modal visible={!isLoggedIn} animationType="none" transparent={true}>
+    <Modal
+      visible={!isLoggedIn && !startingApp}
+      animationType="none"
+      transparent={true}>
       <SafeAreaView style={styles.modalContent}>
         <View style={styles.box}>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

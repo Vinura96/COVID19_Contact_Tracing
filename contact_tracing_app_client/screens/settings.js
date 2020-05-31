@@ -10,7 +10,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import InfectedUserReportModal from './infectedUserReport';
 
 export default function Settings(props) {
-  const {isLoggedIn, signOut} = React.useContext(Context);
+  const {isLoggedIn, signOut, phone, name} = React.useContext(Context);
   const [isInfectedUserModalOpen, setInfectedUserModalOpen] = useState(false);
 
   return (
@@ -28,10 +28,10 @@ export default function Settings(props) {
                 fontSize: 18,
                 color: '#333',
               }}>
-              Kasun Sampath
+              {name}
             </Text>
 
-            <Text style={{color: 'gray', fontSize: 12}}>+94761234567</Text>
+            <Text style={{color: 'gray', fontSize: 12}}>{phone}</Text>
           </View>
         ) : (
           <View style={{alignItems: 'center', marginTop: 20}}>

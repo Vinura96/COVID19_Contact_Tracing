@@ -43,6 +43,7 @@ class ContextProvider extends Component {
           isLoggedIn: false,
           user: null,
           isLoadingApp: false,
+          startingApp: false,
           uid: null,
           phone: '',
           name: '',
@@ -67,11 +68,14 @@ class ContextProvider extends Component {
         isLoadingApp: false,
         isNewUser: false,
         authLoading: false,
+        startingApp: false,
       });
     } else {
       this.setState({
         isNewUser: true,
         authLoading: false,
+        isLoadingApp: false,
+        startingApp: false,
       });
     }
   };
@@ -90,6 +94,8 @@ class ContextProvider extends Component {
           setAppLoading: this.setAppLoading,
           updateUserData: this.updateUserData,
           setAuthLoading: (value) => this.setState({authLoading: value}),
+          setName: (value) => this.setState({name: value}),
+          setAddress: (value) => this.setState({address: value}),
         }}>
         {this.props.children}
       </Context.Provider>

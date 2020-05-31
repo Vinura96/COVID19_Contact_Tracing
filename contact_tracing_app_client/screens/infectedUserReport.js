@@ -18,6 +18,7 @@ var platform = Platform.OS === 'ios' ? 40 : 3;
 import Modal from 'react-native-modal';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
+import {Context} from '../backend/context';
 import Card from '../shared/card';
 
 export default function InfectedUserReportModal({
@@ -25,6 +26,7 @@ export default function InfectedUserReportModal({
   setInfectedUserModalOpen,
 }) {
   const [checkBoxselected, setCheckbox] = useState(false);
+  const {phone, name, address} = React.useContext(Context);
   return (
     <Modal
       style={styles.modal}
@@ -58,9 +60,9 @@ export default function InfectedUserReportModal({
               <Text style={styles.inputtitleText}> Personal Details</Text>
               <Card>
                 <View>
-                  <Text>Kasun Sampath</Text>
-                  <Text>No:32, Katubedda, Moratuwa.</Text>
-                  <Text>+94761234567</Text>
+                  <Text>{name}</Text>
+                  <Text>{address}</Text>
+                  <Text>{phone}</Text>
                 </View>
               </Card>
             </View>

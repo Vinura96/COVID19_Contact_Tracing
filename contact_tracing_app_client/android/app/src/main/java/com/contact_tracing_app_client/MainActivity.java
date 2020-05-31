@@ -1,4 +1,4 @@
-package com.contact_tracing_app_client;
+package com.uom.contact_tracing_app;
 
 import com.facebook.react.ReactActivity;
 

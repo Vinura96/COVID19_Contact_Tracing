@@ -29,6 +29,20 @@ class ContextProvider extends Component {
     this.setState({isLoadingApp: value});
   };
 
+  getNotifications = () => {
+    var userNotify = database()
+      .ref(`/users/${this.state.uid}/notifications`)
+      .on('value', async (snapshot) => {
+        var list = [];
+        snapshot.forEach(function (childSnapshot) {
+          if (childSnapshot.val()) {
+            list.push({...childSnapshot.val(), key: childSnapshot.key});
+          }
+        });
+        this.setState({notifications: list});
+      });
+  };
+
   authenticateUser = () => {
     auth().onAuthStateChanged((user) => {
       if (user) {
@@ -70,6 +84,8 @@ class ContextProvider extends Component {
         authLoading: false,
         startingApp: false,
       });
+
+      this.getNotifications();
     } else {
       this.setState({
         isNewUser: true,

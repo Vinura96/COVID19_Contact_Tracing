@@ -52,7 +52,12 @@ export default function History({navigation}) {
           <TouchableOpacity style={styles.uploadbtn}>
             <AntDesign name="cloudupload" size={20} color="white" />
             <Text
-              style={{paddingHorizontal: 10, fontSize: 14, fontWeight: 'bold'}}>
+              style={{
+                paddingHorizontal: 10,
+                fontSize: 14,
+                fontWeight: 'bold',
+                color: 'white',
+              }}>
               Upload
             </Text>
           </TouchableOpacity>
@@ -61,7 +66,7 @@ export default function History({navigation}) {
         <View style={{marginVertical: 20}}>
           <View
             style={{
-              borderColor: 'gray',
+              borderColor: '#3D6DCC',
               // borderWidth: 2,
               flexDirection: 'row',
               borderTopLeftRadius: 10,
@@ -71,7 +76,7 @@ export default function History({navigation}) {
             }}>
             <Text
               style={{
-                borderColor: 'gray',
+                borderColor: '#3D6DCC',
                 width: '50%',
                 paddingVertical: 5,
                 textAlign: 'center',
@@ -84,7 +89,7 @@ export default function History({navigation}) {
             </Text>
             <Text
               style={{
-                borderColor: 'gray',
+                borderColor: '#3D6DCC',
                 width: '50%',
                 paddingVertical: 5,
                 textAlign: 'center',
@@ -118,10 +123,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 5,
     paddingTop: 10,
-    marginBottom: 50,
+    marginBottom: 100,
   },
   listContainer: {
-    borderColor: 'gray',
+    borderColor: '#3D6DCC',
     // borderWidth: 2,
     flexDirection: 'row',
     borderTopWidth: 0,
@@ -132,7 +137,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     textAlign: 'center',
     // borderLeftWidth: 1,
-    borderColor: 'gray',
+    borderColor: '#3D6DCC',
   },
   listItemfst: {
     width: '50%',
@@ -140,10 +145,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     borderRightWidth: 1,
 
-    borderColor: 'gray',
+    borderColor: '#3D6DCC',
   },
   uploadbtn: {
-    backgroundColor: 'gray',
+    backgroundColor: '#3D6DCC',
     borderRadius: 10,
     flexDirection: 'row',
     width: 100,

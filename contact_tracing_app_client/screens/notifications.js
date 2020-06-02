@@ -6,21 +6,39 @@ import NotificationModal from './notificationDetails';
 import {Header} from 'react-native-elements';
 import Entypo from 'react-native-vector-icons/Entypo';
 
+import {Context} from '../backend/context';
+import database from '@react-native-firebase/database';
+
 export default function Notifications() {
-  const [notifications, setNotifications] = useState([
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-  ]);
+  const {isLoggedIn, uid, notifications} = React.useContext(Context);
   const [isNotificationModalOpen, setNotificationModalOpen] = useState(false);
+  const [notificationsOrdered, setNotificationOrderd] = useState([]);
+  const [selectedNotification, setSelectedNotification] = useState(null);
+  function compare(a, b) {
+    if (a.createdAt < b.createdAt) {
+      return 1;
+    }
+    if (a.createdAt > b.createdAt) {
+      return -1;
+    }
+    return 0;
+  }
+  useEffect(() => {
+    var data = notifications.sort(compare);
+    setNotificationOrderd(data);
+  }, [notifications]);
+
+  const handleRead = (item) => {
+    if (isLoggedIn && !item.isRead) {
+      database()
+        .ref('users/' + uid + '/notifications/' + item.key)
+        .update({
+          ...item,
+          isRead: true,
+        });
+    }
+  };
+
   return (
     <React.Fragment>
       <Header
@@ -40,38 +58,42 @@ export default function Notifications() {
         }}
       />
       <View style={styles.container}>
-        <NotificationModal
-          notification=""
-          isNotificationModalOpen={isNotificationModalOpen}
-          setNotificationModalOpen={setNotificationModalOpen}
-        />
+        {selectedNotification && (
+          <NotificationModal
+            notification={selectedNotification}
+            isNotificationModalOpen={isNotificationModalOpen}
+            setNotificationModalOpen={setNotificationModalOpen}
+          />
+        )}
 
         <View>
           <FlatList
-            data={notifications}
+            data={notificationsOrdered}
             renderItem={({item}) => {
+              var d = new Date(item.createdAt);
+              var date =
+                d.toLocaleDateString() + ' | ' + d.toLocaleTimeString();
               return (
                 <Card>
                   <TouchableOpacity
                     onPress={() => {
+                      handleRead(item);
+                      setSelectedNotification(item);
                       setNotificationModalOpen(true);
                     }}>
                     <View>
                       <Text style={{textAlign: 'justify'}}>
-                        <Text>
-                          <Entypo name="warning" size={18} color="#ffcc00" />
-                        </Text>
-                        <Text>
-                          {' '}
-                          You have expose to a corona infected person.
-                        </Text>
+                        {!item.isRead && (
+                          <Text>
+                            <Entypo name="warning" size={18} color="#ffcc00" />
+                          </Text>
+                        )}
+                        <Text> {item.title}</Text>
                       </Text>
                     </View>
                     <View style={styles.notificationCard}>
                       <View style={styles.notificationCardView}>
-                        <Text style={styles.notificationCardDate}>
-                          2020/10/10 | 11:10:40
-                        </Text>
+                        <Text style={styles.notificationCardDate}>{date}</Text>
                       </View>
                     </View>
                   </TouchableOpacity>
@@ -91,7 +113,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 5,
     paddingTop: 10,
-    marginBottom: 50,
+    marginBottom: 10,
   },
   notificationCard: {
     flexDirection: 'row',

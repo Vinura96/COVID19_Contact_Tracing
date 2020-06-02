@@ -9,6 +9,7 @@ import History from '../screens/history';
 import Notifications from '../screens/notifications';
 import SettingsStack from './settingsStack';
 
+import {Context} from '../backend/context';
 const Tab = createBottomTabNavigator();
 
 function IconWithBadge({name, badgeCount, color, size, group}) {
@@ -44,6 +45,17 @@ function IconWithBadge({name, badgeCount, color, size, group}) {
 }
 
 export default function RootBottomTabNavigator() {
+  const {notifications} = React.useContext(Context);
+  const [notificationCount, setNotificationCount] = useState(0);
+  useEffect(() => {
+    var count = 0;
+    notifications.forEach((element) => {
+      if (!element.isRead) {
+        count += 1;
+      }
+    });
+    setNotificationCount(count);
+  }, [notifications]);
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -75,7 +87,7 @@ export default function RootBottomTabNavigator() {
                 name={'warning'}
                 size={size}
                 color={color}
-                badgeCount={1}
+                badgeCount={notificationCount}
               />
             );
           } else if (route.name === 'Settings') {

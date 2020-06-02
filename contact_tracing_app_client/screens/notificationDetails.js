@@ -18,6 +18,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
+import {Context} from '../backend/context';
 import Card from '../shared/card';
 
 export default function NotificationModal({
@@ -25,6 +26,13 @@ export default function NotificationModal({
   isNotificationModalOpen,
   setNotificationModalOpen,
 }) {
+  const {isLoggedIn, uid} = React.useContext(Context);
+  const [date, setDate] = useState('');
+
+  useEffect(() => {
+    var d = new Date(notification.createdAt);
+    setDate(d.toLocaleDateString() + ' | ' + d.toLocaleTimeString());
+  }, [notification]);
   return (
     <Modal
       style={styles.modal}
@@ -58,14 +66,12 @@ export default function NotificationModal({
                     <Text>
                       <Entypo name="warning" size={18} color="#ffcc00" />
                     </Text>
-                    <Text> You have expose to a corona infected person.</Text>
+                    <Text> {notification.title}</Text>
                   </Text>
                 </View>
                 <View style={styles.notificationCard}>
                   <View style={styles.notificationCardView}>
-                    <Text style={styles.notificationCardDate}>
-                      2020/10/10 | 11:10:40
-                    </Text>
+                    <Text style={styles.notificationCardDate}>{date}</Text>
                   </View>
                 </View>
               </Card>
@@ -73,21 +79,25 @@ export default function NotificationModal({
             <View style={{width: '100%', marginBottom: 10}}>
               <View style={styles.listItem}>
                 <Text style={styles.listTitle}>Date</Text>
-                <Text style={styles.numberBox}>05/05/2020</Text>
+                <Text style={styles.numberBox}>
+                  {new Date(notification.infectedTime).toLocaleDateString()}
+                </Text>
               </View>
               <View style={styles.listItem}>
                 <Text style={styles.listTitle}>Time</Text>
-                <Text style={styles.numberBox}>10:32 AM</Text>
+                <Text style={styles.numberBox}>
+                  {new Date(notification.infectedTime).toLocaleTimeString()}
+                </Text>
               </View>
             </View>
             <View style={{width: '100%', marginBottom: 5}}>
               <View style={styles.listItem}>
                 <Text style={styles.bodyText}>
-                  Please be safe and stay at home until responsible person
+                  Please be safe and STAY AT HOME until a responsible person
                   contact you.
                 </Text>
               </View>
-              <View style={{...styles.listItem, marginTop: 50}}>
+              <View style={{...styles.listItem, marginTop: 30}}>
                 <Text style={styles.bodyText}>
                   ** Please send us your current location.
                 </Text>

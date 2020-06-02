@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  ScrollView,
 } from 'react-native';
 
 import Card from '../shared/card';
@@ -15,20 +16,66 @@ import database from '@react-native-firebase/database';
 import {Context} from '../backend/context';
 
 export default function ProfileSettings({navigation, route}) {
-  const [value, onChangeText] = React.useState(null);
   const {
-    isLoggedIn,
-
+    setAppLoading,
     uid,
     phone,
     name,
     address,
+    setAddress,
+    setName,
   } = React.useContext(Context);
 
-  const updateName = () => {};
+  const [nameEdit, setNameEdit] = React.useState(name);
+  const [addressEdit, setAddressEdit] = React.useState(address);
+  const [isnameEdit, setISNameEdit] = React.useState(false);
+  const [isaddressEdit, setISAddressEdit] = React.useState(false);
+
+  const updateAddress = () => {
+    if (isaddressEdit) {
+      setAppLoading(true);
+      database()
+        .ref('/users/' + uid)
+        .update({
+          address: addressEdit,
+        })
+        .then(function (val) {
+          setAppLoading(false);
+          setAddress(addressEdit);
+          setISAddressEdit(false);
+        })
+        .catch((err) => {
+          setAppLoading(false);
+          console.log(err);
+        });
+    } else {
+      setISAddressEdit(true);
+    }
+  };
+  const updateName = () => {
+    if (isnameEdit) {
+      setAppLoading(true);
+      database()
+        .ref('/users/' + uid)
+        .update({
+          name: nameEdit,
+        })
+        .then(function (val) {
+          setAppLoading(false);
+          setName(nameEdit);
+          setISNameEdit(false);
+        })
+        .catch((err) => {
+          setAppLoading(false);
+          console.log(err);
+        });
+    } else {
+      setISNameEdit(true);
+    }
+  };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={{marginVertical: 20, marginHorizontal: 10, flex: 1}}>
           <Text style={styles.titleText}>ID</Text>
@@ -52,16 +99,21 @@ export default function ProfileSettings({navigation, route}) {
             <TextInput
               style={{...styles.input, ...{flex: 2}}}
               placeholder={name}
+              value={isnameEdit ? nameEdit : ''}
+              editable={isnameEdit}
               placeholderTextColor="gray"
-              onChangeText={(text) => onChangeText(text)}
+              onChangeText={(text) => setNameEdit(text)}
             />
             <TouchableOpacity
+              disabled={isnameEdit && nameEdit.length < 3}
               style={styles.updateButton}
               onPress={(Keyboard.dismiss, updateName)}>
               <Card
                 styleContent={{marginHorizontal: 5, marginVertical: 5}}
                 style={styles.updatebtnCard}>
-                <Text style={styles.updateBtnText}>Edit</Text>
+                <Text style={styles.updateBtnText}>
+                  {isnameEdit ? 'Update' : 'Edit'}
+                </Text>
               </Card>
             </TouchableOpacity>
           </View>
@@ -71,24 +123,29 @@ export default function ProfileSettings({navigation, route}) {
               style={{...styles.input, ...{flex: 2}}}
               placeholder={address}
               placeholderTextColor="gray"
+              value={isaddressEdit ? addressEdit : ''}
               multiline={true}
               height={100}
+              editable={isaddressEdit}
               maxLength={250}
-              onChangeText={(text) => onChangeText(text)}
+              onChangeText={(text) => setAddressEdit(text)}
             />
             <TouchableOpacity
+              disabled={isaddressEdit && addressEdit.length < 3}
               style={styles.updateButton}
-              onPress={(Keyboard.dismiss, updateName)}>
+              onPress={(Keyboard.dismiss, updateAddress)}>
               <Card
                 styleContent={{marginHorizontal: 5, marginVertical: 5}}
                 style={styles.updatebtnCard}>
-                <Text style={styles.updateBtnText}>Edit</Text>
+                <Text style={styles.updateBtnText}>
+                  {isaddressEdit ? 'Update' : 'Edit'}
+                </Text>
               </Card>
             </TouchableOpacity>
           </View>
         </View>
       </TouchableWithoutFeedback>
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
@@ -97,7 +154,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 5,
     paddingTop: 10,
-    marginBottom: 50,
+    marginBottom: 10,
   },
   titleText: {
     fontFamily: 'nunito-bold',
@@ -122,7 +179,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   updatebtnCard: {
-    backgroundColor: 'gray',
+    backgroundColor: '#3D6DCC',
     alignItems: 'center',
     width: '80%',
   },
@@ -130,5 +187,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlignVertical: 'center',
     fontFamily: 'nunito-bold',
+    color: 'white',
   },
 });

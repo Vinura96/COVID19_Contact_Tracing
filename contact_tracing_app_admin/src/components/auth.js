@@ -1,18 +1,28 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 import { Context } from "../backend/context";
 import { Redirect } from "react-router";
 
 export default function Auth() {
-  const { signIn, authError, isLoggedIn, user } = React.useContext(Context);
+  const {
+    signIn,
+    authError,
+    isLoggedIn,
+    user,
+    requestForAdminAccess,
+    adminAccessRequested,
+  } = React.useContext(Context);
 
   return (
     <div
       className="container-fluid pt-5"
       style={{ backgroundColor: "#7294da" }}
     >
-      {isLoggedIn && user ? <Redirect to="/admin" /> : null}
+      {
+        // isLoggedIn && user ? <Redirect to="/admin" /> : null
+      }
       <div className="container-fluid h-50 text-center">
         <div className="row">
           <div
@@ -42,9 +52,21 @@ export default function Auth() {
 
                 <div className="row py-3">
                   <div className="col-12">
-                    {authError ? (
+                    {authError && adminAccessRequested ? (
                       <button
-                        onClick={() => console.log("request admin access")}
+                        type="button"
+                        className="btn btn-success w-50"
+                        style={{ borderRadius: 20 }}
+                        disabled
+                      >
+                        <FontAwesomeIcon
+                          icon={faCheck}
+                          style={{ marginRight: 10 }}
+                        />
+                      </button>
+                    ) : authError ? (
+                      <button
+                        onClick={requestForAdminAccess}
                         type="button"
                         className="btn btn-primary w-50"
                         style={{ borderRadius: 20 }}

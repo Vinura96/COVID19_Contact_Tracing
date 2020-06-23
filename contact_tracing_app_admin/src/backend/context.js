@@ -12,6 +12,7 @@ class ContextProvider extends Component {
     isLoggedIn: false,
     uid: null,
     authError: "",
+    adminAccessRequested: false,
   };
   componentDidMount() {
     this.authenticateUser();
@@ -24,28 +25,13 @@ class ContextProvider extends Component {
           .auth()
           .currentUser.getIdTokenResult()
           .then((idTokenResult) => {
-            if (true) {
-              //!!idTokenResult.claims.admin
-              this.setState({
-                isLoggedIn: true,
-                user: user,
-                userName: user.displayName,
-                email: user.email,
-                uid: user.uid,
-                isLoadingApp: false,
-                authError: "",
-              });
-            } else {
-              this.setState({
-                isLoggedIn: false,
-                user: null,
-                isLoadingApp: false,
-                uid: null,
-                userName: "",
-                email: "",
-                authError: "This account don't have permissions to sign in.",
-              });
-            }
+            this.setState({
+              user: user,
+              userName: user.displayName,
+              email: user.email,
+              uid: user.uid,
+            });
+            this.updateUserData(user);
           })
           .catch((error) => {
             console.log(error);
@@ -64,6 +50,31 @@ class ContextProvider extends Component {
     });
   };
 
+  updateUserData = async (user) => {
+    const data = await firebase
+      .database()
+      .ref("/admin/" + user.uid)
+      .once("value")
+      .then(function (snapshot) {
+        return snapshot.val();
+      });
+    if (data && data.verified) {
+      this.setState({
+        isLoggedIn: true,
+        isLoadingApp: false,
+        authError: "",
+      });
+    } else {
+      this.setState({
+        isLoggedIn: false,
+        isLoadingApp: false,
+        userName: "",
+        email: "",
+        authError: "This account don't have permissions to sign in.",
+      });
+    }
+  };
+
   signOut = () => {
     firebase
       .auth()
@@ -76,6 +87,20 @@ class ContextProvider extends Component {
       });
     this.setState({ user: null, isLoggedIn: false });
   };
+  requestForAdminAccess = () => {
+    firebase
+      .database()
+      .ref("/admin/" + this.state.user.uid)
+      .set({
+        email: this.state.user.email,
+        name: this.state.user.displayName,
+        created_at: Date.now(),
+        verified: false,
+      })
+      .then((snapshot) => {
+        this.setState({ adminAccessRequested: true });
+      });
+  };
   signIn = () => {
     var provider = new firebase.auth.GoogleAuthProvider();
 
@@ -83,18 +108,7 @@ class ContextProvider extends Component {
       .auth()
       .signInWithPopup(provider)
       .then(function (result) {
-        if (result.additionalUserInfo.isNewUser) {
-          firebase
-            .database()
-            .ref("/admin/" + result.user.uid)
-            .set({
-              email: result.user.email,
-              name: result.additionalUserInfo.profile.name,
-              created_at: Date.now(),
-              verified: false,
-            })
-            .then(function (snapshot) {});
-        } else {
+        if (!result.additionalUserInfo.isNewUser) {
           firebase
             .database()
             .ref("/admin/" + result.user.uid)
@@ -115,6 +129,7 @@ class ContextProvider extends Component {
           ...this.state,
           signIn: this.signIn,
           signOut: this.signOut,
+          requestForAdminAccess: this.requestForAdminAccess,
         }}
       >
         {this.props.children}

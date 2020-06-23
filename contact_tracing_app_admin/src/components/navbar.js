@@ -16,7 +16,9 @@ export default function Navbar() {
       className="navbar fixed-top navbar-expand-md navbar-dark py-0 my-0"
       style={{ backgroundColor: "#7294da" }}
     >
-      {!isLoggedIn || !user ? <Redirect to="/" /> : null}
+      {
+        // !isLoggedIn || !user ? <Redirect to="/" /> : null
+      }
       <span className="navbar-brand mb-0 h1">Contact Tracking Admin</span>
       <button
         className="navbar-toggler"
@@ -35,8 +37,18 @@ export default function Navbar() {
       >
         <ul className="navbar-nav pl-4 w-100">
           <li className="nav-item px-4">
-            <Link className="nav-link" to="/admin/">
+            <Link className="nav-link text-light" to="/admin/adminRequests">
               nav 1
+            </Link>
+          </li>
+          <li className="nav-item px-4">
+            <Link className="nav-link text-light" to="/admin/adminRequests">
+              nav 1
+            </Link>
+          </li>
+          <li className="nav-item px-4">
+            <Link className="nav-link text-light" to="/admin/adminRequests">
+              Admin Access Requests
             </Link>
           </li>
         </ul>

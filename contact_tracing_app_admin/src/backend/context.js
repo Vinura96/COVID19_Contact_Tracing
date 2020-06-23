@@ -96,6 +96,7 @@ class ContextProvider extends Component {
         name: this.state.user.displayName,
         created_at: Date.now(),
         verified: false,
+        isHandled: false,
       })
       .then((snapshot) => {
         this.setState({ adminAccessRequested: true });

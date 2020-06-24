@@ -37,13 +37,13 @@ export default function Navbar() {
       >
         <ul className="navbar-nav pl-4 w-100">
           <li className="nav-item px-4">
-            <Link className="nav-link text-light" to="/admin/adminRequests">
-              nav 1
+            <Link className="nav-link text-light" to="/admin/findUsers">
+              Find Users
             </Link>
           </li>
           <li className="nav-item px-4">
-            <Link className="nav-link text-light" to="/admin/adminRequests">
-              nav 1
+            <Link className="nav-link text-light" to="/admin/">
+              Infected Users
             </Link>
           </li>
           <li className="nav-item px-4">

@@ -47,7 +47,7 @@ export default function InfectedUsers() {
               Phone
             </div>
             <div className="col-3 pt-1 font-weight-bold">
-              Last 14 days contacted persons count
+              14 days contacted persons count / uploaded date
             </div>
           </div>
           {users.map((item, index) => (
@@ -69,7 +69,13 @@ export default function InfectedUsers() {
                 <div className="border-right border-gray col-2 p-2  overflow-hidden">
                   {item.phone}
                 </div>
-                <div className="col-3 p-2  overflow-hidden">{item.count}</div>
+                <div className="col-3 p-2  overflow-hidden">
+                  {item.count} ({" "}
+                  {new Date(
+                    item.contacted_details_uploaded_date
+                  ).toLocaleDateString()}
+                  )
+                </div>
               </div>
             </Link>
           ))}

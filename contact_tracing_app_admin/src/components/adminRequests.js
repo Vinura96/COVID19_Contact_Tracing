@@ -73,10 +73,16 @@ export default function AdminRequests() {
           </select>
         </div>
       </div>
-      <div className="row mx-3 px-2 h6 mt-3">
-        <div className="col-4">Name</div>
-        <div className="col-4">Email</div>
-      </div>
+      {requests && requests.length > 0 ? (
+        <div className="row mx-3 px-2 h6 mt-3">
+          <div className="col-4">Name</div>
+          <div className="col-4">Email</div>
+        </div>
+      ) : (
+        <div className="row text-center py-3 ">
+          <div className="col-12">No Data</div>
+        </div>
+      )}
       {requests.map((item, index) => {
         return (
           <div key={index} className="card container m-3 p-3">

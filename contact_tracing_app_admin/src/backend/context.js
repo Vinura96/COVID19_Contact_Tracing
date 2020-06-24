@@ -13,6 +13,7 @@ class ContextProvider extends Component {
     uid: null,
     authError: "",
     adminAccessRequested: false,
+    allNotificationsSent: true,
   };
   componentDidMount() {
     this.authenticateUser();
@@ -47,6 +48,20 @@ class ContextProvider extends Component {
           authError: "",
         });
       }
+    });
+  };
+  sendContactedNotifications = async (data) => {
+    data.forEach((user) => {
+      firebase
+        .database()
+        .ref("/users/" + user.key + "/notifications")
+        .push()
+        .set({
+          createdAt: Date.now(),
+          isRead: false,
+          title: "You have expose to a corona infected person.",
+          infectedTime: user.contacted_time,
+        });
     });
   };
 
@@ -131,6 +146,7 @@ class ContextProvider extends Component {
           signIn: this.signIn,
           signOut: this.signOut,
           requestForAdminAccess: this.requestForAdminAccess,
+          sendContactedNotifications: this.sendContactedNotifications,
         }}
       >
         {this.props.children}

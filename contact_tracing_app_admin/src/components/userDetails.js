@@ -6,10 +6,11 @@ import { Context } from "../backend/context";
 import { Link } from "react-router-dom";
 
 export default function UserDetails(props) {
-  //   const { isLoggedIn, user } = React.useContext(Context);
+  const { sendContactedNotifications, allNotificationsSent } = React.useContext(
+    Context
+  );
   const [user, setUser] = useState(null);
   const [contactedUsers, setContactedUsers] = useState(null);
-  const [contactedUsersID, setContactedUsersID] = useState(null);
 
   useEffect(() => {
     firebase
@@ -33,7 +34,6 @@ export default function UserDetails(props) {
             list3.push(childSnapshot.val());
           }
         });
-        setContactedUsersID(list3);
         firebase
           .database()
           .ref(`/users`)
@@ -45,10 +45,14 @@ export default function UserDetails(props) {
                 childSnapshot.val() &&
                 list.includes(childSnapshot.val().id)
               ) {
-                list2.push({ ...childSnapshot.val(), key: childSnapshot.key });
+                list2.push({
+                  ...childSnapshot.val(),
+                  key: childSnapshot.key,
+                  contacted_time:
+                    list3[list.indexOf(childSnapshot.val().id)].contacted_time,
+                });
               }
             });
-            console.log(list2);
             setContactedUsers(list2);
           });
       });
@@ -138,6 +142,17 @@ export default function UserDetails(props) {
         <div className="col-4">
           Total : {contactedUsers && contactedUsers.length}
         </div>
+        {user && user.infected && (
+          <div className="col-4">
+            <button
+              onClick={() => sendContactedNotifications(contactedUsers)}
+              className="btn btn-sm btn-warning"
+              disabled={!allNotificationsSent}
+            >
+              Send Notifications All
+            </button>
+          </div>
+        )}
       </div>
       <div className="row mt-2 text-center">
         <div className="col-12 border-left border-right border-gray overflow-hidden rounded-lg">
@@ -178,7 +193,7 @@ export default function UserDetails(props) {
                     {item.phone}
                   </div>
                   <div className="col-3 p-2  overflow-hidden">
-                    {item.count} ({" "}
+                    {item.count} (
                     {new Date(
                       item.contacted_details_uploaded_date
                     ).toLocaleDateString()}

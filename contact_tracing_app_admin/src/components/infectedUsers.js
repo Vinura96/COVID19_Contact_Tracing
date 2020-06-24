@@ -31,56 +31,62 @@ export default function InfectedUsers() {
         <div className="col-12 h3 pt-3 text-center">Infected Users</div>
       </div>
 
-      <div className="row mt-3 text-center">
-        <div className="col-12 border-left border-right border-gray overflow-hidden rounded-lg">
-          <div className="row border-bottom border-top border-gray">
-            <div className="border-right border-gray col-2 pt-2 font-weight-bold">
-              ID
-            </div>
-            <div className="border-right border-gray col-2 pt-2 font-weight-bold">
-              Name
-            </div>
-            <div className="border-right border-gray col-3 pt-2 font-weight-bold">
-              Address
-            </div>
-            <div className="border-right border-gray col-2 pt-2 font-weight-bold">
-              Phone
-            </div>
-            <div className="col-3 pt-1 font-weight-bold">
-              14 days contacted persons count / uploaded date
-            </div>
-          </div>
-          {users.map((item, index) => (
-            <Link
-              key={index}
-              className="text-dark"
-              to={"/admin/userDetails/" + item.key}
-            >
-              <div className="row border-bottom border-gray">
-                <div className="border-right border-gray col-2 p-2  overflow-hidden">
-                  {item.id}
-                </div>
-                <div className="border-right border-gray col-2 p-2  overflow-hidden">
-                  {item.name}
-                </div>
-                <div className="border-right border-gray col-3 p-2  overflow-hidden">
-                  {item.address}
-                </div>
-                <div className="border-right border-gray col-2 p-2  overflow-hidden">
-                  {item.phone}
-                </div>
-                <div className="col-3 p-2  overflow-hidden">
-                  {item.count} ({" "}
-                  {new Date(
-                    item.contacted_details_uploaded_date
-                  ).toLocaleDateString()}
-                  )
-                </div>
+      {users && users.length > 0 ? (
+        <div className="row mt-3 text-center">
+          <div className="col-12 border-left border-right border-gray overflow-hidden rounded-lg">
+            <div className="row border-bottom border-top border-gray">
+              <div className="border-right border-gray col-2 pt-2 font-weight-bold">
+                ID
               </div>
-            </Link>
-          ))}
+              <div className="border-right border-gray col-2 pt-2 font-weight-bold">
+                Name
+              </div>
+              <div className="border-right border-gray col-3 pt-2 font-weight-bold">
+                Address
+              </div>
+              <div className="border-right border-gray col-2 pt-2 font-weight-bold">
+                Phone
+              </div>
+              <div className="col-3 pt-1 font-weight-bold">
+                14 days contacted persons count / uploaded date
+              </div>
+            </div>
+            {users.map((item, index) => (
+              <Link
+                key={index}
+                className="text-dark"
+                to={"/admin/userDetails/" + item.key}
+              >
+                <div className="row border-bottom border-gray">
+                  <div className="border-right border-gray col-2 p-2  overflow-hidden">
+                    {item.id}
+                  </div>
+                  <div className="border-right border-gray col-2 p-2  overflow-hidden">
+                    {item.name}
+                  </div>
+                  <div className="border-right border-gray col-3 p-2  overflow-hidden">
+                    {item.address}
+                  </div>
+                  <div className="border-right border-gray col-2 p-2  overflow-hidden">
+                    {item.phone}
+                  </div>
+                  <div className="col-3 p-2  overflow-hidden">
+                    {item.count} ({" "}
+                    {new Date(
+                      item.contacted_details_uploaded_date
+                    ).toLocaleDateString()}
+                    )
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="row text-center py-3 ">
+          <div className="col-12">No Data</div>
+        </div>
+      )}
     </div>
   );
 }

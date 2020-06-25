@@ -34,6 +34,7 @@ export default function UserDetails(props) {
             list3.push(childSnapshot.val());
           }
         });
+        // console.log(list);
         firebase
           .database()
           .ref(`/users`)
@@ -175,7 +176,7 @@ export default function UserDetails(props) {
               </div>
             </div>
           </div>
-
+          {console.log(contactedUsers)}
           {user && contactedUsers && contactedUsers.length > 0 ? (
             contactedUsers.map((item, index) => (
               <div key={index}>

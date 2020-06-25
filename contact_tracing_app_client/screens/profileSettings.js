@@ -24,6 +24,7 @@ export default function ProfileSettings({navigation, route}) {
     address,
     setAddress,
     setName,
+    id,
   } = React.useContext(Context);
 
   const [nameEdit, setNameEdit] = React.useState(name);
@@ -81,7 +82,7 @@ export default function ProfileSettings({navigation, route}) {
           <Text style={styles.titleText}>ID</Text>
           <TextInput
             style={styles.input}
-            placeholder={uid}
+            placeholder={id}
             placeholderTextColor="gray"
             editable={false}
           />

@@ -80,6 +80,10 @@ export default function Auth() {
           address: address,
           name: name,
           created_at: Date.now(),
+          count: 0,
+          infected: false,
+          phone: user.phoneNumber,
+          id: user.phoneNumber,
         })
         .then(function (snapshot) {
           updateUserData(user);

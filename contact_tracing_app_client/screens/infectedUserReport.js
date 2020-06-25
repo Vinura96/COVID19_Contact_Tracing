@@ -26,7 +26,13 @@ export default function InfectedUserReportModal({
   setInfectedUserModalOpen,
 }) {
   const [checkBoxselected, setCheckbox] = useState(false);
-  const {phone, name, address} = React.useContext(Context);
+  const {
+    phone,
+    name,
+    address,
+    uploadContactedPersonHistory,
+    reportAsInfected,
+  } = React.useContext(Context);
   return (
     <Modal
       style={styles.modal}
@@ -49,7 +55,7 @@ export default function InfectedUserReportModal({
             style={styles.modalClose}
             onPress={() => setInfectedUserModalOpen(false)}
           />
-          <Text style={{...styles.titleText, marginBottom: 20}}>
+          <Text style={{...styles.titleText, marginBottom: 20, marginTop: 20}}>
             Report As Infected Person
           </Text>
           <ScrollView
@@ -66,14 +72,16 @@ export default function InfectedUserReportModal({
                 </View>
               </Card>
             </View>
-            <View style={{width: '100%', marginBottom: 10}}>
-              <Text style={styles.inputtitleText}>National ID number</Text>
-              <TextInput
-                style={styles.input}
-                placeholder={'961234567v'}
-                placeholderTextColor="gray"
-              />
-            </View>
+            {false && (
+              <View style={{width: '100%', marginBottom: 10}}>
+                <Text style={styles.inputtitleText}>National ID number</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder={'961234567v'}
+                  placeholderTextColor="gray"
+                />
+              </View>
+            )}
             <View style={{width: '100%', marginBottom: 5}}>
               <View style={{marginVertical: 10, flexDirection: 'row'}}>
                 <CheckBox
@@ -95,10 +103,14 @@ export default function InfectedUserReportModal({
               </View>
             )}
 
-            <View style={{marginBottom: 50}}>
+            <View style={{marginBottom: 50, marginTop: 20}}>
               <View>
                 <TouchableOpacity
                   disabled={!checkBoxselected}
+                  onPress={() => {
+                    uploadContactedPersonHistory();
+                    reportAsInfected();
+                  }}
                   style={
                     checkBoxselected
                       ? styles.uploadbtn
@@ -183,6 +195,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     width: '100%',
+    paddingTop: 20,
   },
   modal: {margin: 0, padding: 0},
   modalScroll: {

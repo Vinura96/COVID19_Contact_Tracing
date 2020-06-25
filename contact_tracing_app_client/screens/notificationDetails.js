@@ -26,7 +26,7 @@ export default function NotificationModal({
   isNotificationModalOpen,
   setNotificationModalOpen,
 }) {
-  const {isLoggedIn, uid} = React.useContext(Context);
+  const {uploadContactedPersonHistory} = React.useContext(Context);
   const [date, setDate] = useState('');
 
   useEffect(() => {
@@ -99,21 +99,23 @@ export default function NotificationModal({
               </View>
               <View style={{...styles.listItem, marginTop: 30}}>
                 <Text style={styles.bodyText}>
-                  ** Please send us your current location.
+                  ** Please upload your contacted persons history.
                 </Text>
               </View>
             </View>
 
-            <View style={{marginBottom: 50}}>
+            <View style={{marginBottom: 50, marginTop: 10}}>
               <View>
-                <TouchableOpacity style={styles.uploadbtn}>
+                <TouchableOpacity
+                  style={styles.uploadbtn}
+                  onPress={uploadContactedPersonHistory}>
                   <Text
                     style={{
                       paddingHorizontal: 20,
                       fontSize: 18,
                       color: 'white',
                     }}>
-                    Send My Location
+                    Upload Contact History
                   </Text>
                 </TouchableOpacity>
               </View>

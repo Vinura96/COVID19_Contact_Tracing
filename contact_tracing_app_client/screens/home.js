@@ -2,9 +2,12 @@ import React, {useState} from 'react';
 import {StyleSheet, Text, View, Switch, TouchableOpacity} from 'react-native';
 import Card from '../shared/card';
 import {Header} from 'react-native-elements';
+import {Context} from '../backend/context';
 
 export default function Home({navigation}) {
-  const [isTrackingEnable, setIsTrackingEnable] = useState(false);
+  const {contactHistory, setTracking, isTrackingEnable} = React.useContext(
+    Context,
+  );
   return (
     <React.Fragment>
       <Header
@@ -36,11 +39,10 @@ export default function Home({navigation}) {
               trackColor={{false: '#b3b3b3', true: 'black'}}
               thumbColor={isTrackingEnable ? 'white' : 'white'}
               ios_backgroundColor="#f4f3f4"
-              onValueChange={() => setIsTrackingEnable(!isTrackingEnable)}
+              onValueChange={() => setTracking(!isTrackingEnable)}
               value={isTrackingEnable}
             />
-            <TouchableOpacity
-              onPress={() => setIsTrackingEnable(!isTrackingEnable)}>
+            <TouchableOpacity onPress={() => setTracking(!isTrackingEnable)}>
               <Text
                 style={
                   isTrackingEnable
@@ -71,27 +73,27 @@ export default function Home({navigation}) {
           <View style={styles.listItem}>
             <Text style={styles.listTitle}>Today</Text>
             <Text style={styles.listCenter}>-</Text>
-            <Text style={styles.numberBox}>10</Text>
+            <Text style={styles.numberBox}>{contactHistory.today}</Text>
           </View>
           <View style={styles.listItem}>
             <Text style={styles.listTitle}>Yesterday</Text>
             <Text style={styles.listCenter}>-</Text>
-            <Text style={styles.numberBox}>60</Text>
+            <Text style={styles.numberBox}>{contactHistory.yesterday}</Text>
           </View>
           <View style={styles.listItem}>
             <Text style={styles.listTitle}>Last 3 days</Text>
             <Text style={styles.listCenter}>-</Text>
-            <Text style={styles.numberBox}>150</Text>
+            <Text style={styles.numberBox}>{contactHistory.last3days}</Text>
           </View>
           <View style={styles.listItem}>
             <Text style={styles.listTitle}>Last 7 days</Text>
             <Text style={styles.listCenter}>-</Text>
-            <Text style={styles.numberBox}>400</Text>
+            <Text style={styles.numberBox}>{contactHistory.last7days}</Text>
           </View>
           <View style={styles.listItem}>
             <Text style={styles.listTitle}>Last 14 days</Text>
             <Text style={styles.listCenter}>-</Text>
-            <Text style={styles.numberBox}>10000</Text>
+            <Text style={styles.numberBox}>{contactHistory.last14days}</Text>
           </View>
         </Card>
       </View>

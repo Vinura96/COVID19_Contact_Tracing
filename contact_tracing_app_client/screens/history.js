@@ -3,29 +3,13 @@ import {StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Header} from 'react-native-elements';
 
+import {Context} from '../backend/context';
+
 export default function History({navigation}) {
-  const [contactHistory, setContactHistory] = useState([
-    0,
-    1,
-    2,
-    3,
-    0,
-    1,
-    2,
-    3,
-    0,
-    1,
-    2,
-    3,
-    0,
-    1,
-    2,
-    3,
-    0,
-    1,
-    2,
-    3,
-  ]);
+  const {uploadContactedPersonHistory, contactHistoryArray} = React.useContext(
+    Context,
+  );
+
   return (
     <React.Fragment>
       <Header
@@ -49,7 +33,9 @@ export default function History({navigation}) {
           Last 14 days contact history.
         </Text>
         <View>
-          <TouchableOpacity style={styles.uploadbtn}>
+          <TouchableOpacity
+            style={styles.uploadbtn}
+            onPress={uploadContactedPersonHistory}>
             <AntDesign name="cloudupload" size={20} color="white" />
             <Text
               style={{
@@ -102,12 +88,16 @@ export default function History({navigation}) {
             </Text>
           </View>
           <FlatList
-            data={contactHistory}
+            data={contactHistoryArray}
             renderItem={({item}) => {
               return (
                 <View style={styles.listContainer}>
-                  <Text style={styles.listItemfst}>2020/05/10 | 18:10:10</Text>
-                  <Text style={styles.listItemtwo}>{item}</Text>
+                  <Text style={styles.listItemfst}>
+                    {new Date(item.contacted_time).toLocaleDateString() +
+                      ' | ' +
+                      new Date(item.contacted_time).toLocaleTimeString()}
+                  </Text>
+                  <Text style={styles.listItemtwo}>{item.id}</Text>
                 </View>
               );
             }}

@@ -29,6 +29,7 @@ export default function Auth() {
     user,
     authLoading,
     setAuthLoading,
+    formatedBlutoothID,
   } = React.useContext(Context);
 
   const [confirm, setConfirm] = useState(null);
@@ -83,7 +84,7 @@ export default function Auth() {
           count: 0,
           infected: false,
           phone: user.phoneNumber,
-          id: user.phoneNumber,
+          id: formatedBlutoothID,
         })
         .then(function (snapshot) {
           updateUserData(user);

@@ -24,7 +24,7 @@ export default function ProfileSettings({navigation, route}) {
     address,
     setAddress,
     setName,
-    id,
+    formatedBlutoothID,
   } = React.useContext(Context);
 
   const [nameEdit, setNameEdit] = React.useState(name);
@@ -82,7 +82,7 @@ export default function ProfileSettings({navigation, route}) {
           <Text style={styles.titleText}>ID</Text>
           <TextInput
             style={styles.input}
-            placeholder={id}
+            placeholder={formatedBlutoothID}
             placeholderTextColor="gray"
             editable={false}
           />

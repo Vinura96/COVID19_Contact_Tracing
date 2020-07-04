@@ -71,7 +71,6 @@ class ContextProvider extends Component {
     isLoggedIn: false,
     isLoadingApp: false,
     user: null,
-    userID: '',
     phone: '',
     name: '',
     address: '',
@@ -92,6 +91,7 @@ class ContextProvider extends Component {
     isTrackingEnable: false,
     uniqueid: '',
     devicesFound: [],
+    formatedBlutoothID: '',
   };
   componentDidMount() {
     this.authenticateUser();
@@ -118,6 +118,7 @@ class ContextProvider extends Component {
     let d = '00000000-0000-0000-' + b + '-' + c;
     this.setState({
       uniqueid: d,
+      formatedBlutoothID: this.short(d),
     });
     console.log('BLE Advertiser', BLEAdvertiser);
     // Uses the Apple code to pick up iPhones

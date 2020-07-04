@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {AppState} from 'react-native';
 
 const Context = React.createContext();
 
@@ -12,6 +13,7 @@ import {NativeEventEmitter, NativeModules} from 'react-native';
 import BLEAdvertiser from 'react-native-ble-advertiser';
 import update from 'immutability-helper';
 import DeviceInfo from 'react-native-device-info';
+import moment from 'moment';
 
 import {PermissionsAndroid} from 'react-native';
 
@@ -92,6 +94,7 @@ class ContextProvider extends Component {
     uniqueid: '',
     devicesFound: [],
     formatedBlutoothID: '',
+    appState: AppState.currentState
   };
   componentDidMount() {
     this.authenticateUser();
@@ -99,6 +102,64 @@ class ContextProvider extends Component {
     this.handleDeviceScanner();
     this.getContactHistoryFromLocal();
     this.checkTrackingState();
+    console.log("Appstate listener added");
+    AppState.addEventListener('change', this._handleAppStateChange);
+    // perform check when the component mounts
+    await this.checkDate();
+  }
+
+  componentWillUnmount () {
+    // remove the listener
+    console.log("Appstate listener removed");
+    AppState.removeEventListener('change', this._handleAppStateChange);
+  }
+
+  _handleAppStateChange = async (nextAppState) => {
+    console.log("Appstate changed");
+    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+      // app has come to the foreground
+      // perform checks etc here
+      await this.checkDate();
+    }
+    // update the appState
+    this.setState({ appState: nextAppState });
+    console.log("New Appstate is");
+    console.log(nextAppState);
+  }
+
+  checkDate = async () => {
+    // create a string with the current date
+    let currentDateString = moment('YYYY-MM-DD') 
+    
+    // get the value from storage
+    let savedDateString = await AsyncStorage.getItem('storedDate');
+    if (savedDateString) {
+
+      if (moment(currentDateString).isAfter(savedDateString)) {
+        // this is where you put the code that resets everything
+        // clear the values that you have previously saved
+        console.log("Clearing Daily the state of devices found");
+        this.setState({ devicesFound: [] });
+        // remember to save the new date
+        try {
+          console.log("Saving the new date");
+          await AsyncStorage.setItem('storedDate', currentDateString)
+        } catch (err) {
+        }
+      } else {
+        console.log("Date is not changed");
+        // don't do anything as the time hasn't changed
+        // so we could really get rid of this else statement
+      }
+    } else {
+      // save the time as this is the first time the app has launched
+      // do any other initial setup here
+        try {
+          console.log("initially storing the date");
+          await AsyncStorage.setItem('storedDate', currentDateString)
+        } catch (err) {
+        }
+    }
   }
 
   checkTrackingState = async () => {

@@ -98,16 +98,18 @@ class ContextProvider extends Component {
     requestLocationPermission();
     this.handleDeviceScanner();
     this.getContactHistoryFromLocal();
-
-    // this.setObjectValue([
-    //   {contacted_time: 1591008973859, id: 'ffdffwdfwf445dsfa'},
-    //   {contacted_time: 1592118973859, id: 'ffdffwdfwf445dsfa'},
-    //   {contacted_time: 1592628973859, id: 'ffdffwdfwf445dsfa'},
-    //   {contacted_time: 1592788973859, id: 'ffdffwdfwf445dsfa'},
-    //   {contacted_time: 1592888973859, id: 'ffdffwdfwf445dsfa'},
-    //   {contacted_time: 1592958973859, id: 'ffdffwdfwf445dsfa'},
-    // ]);
+    this.checkTrackingState();
   }
+
+  checkTrackingState = async () => {
+    try {
+      const getData = await AsyncStorage.getItem('@isTrackingEnabled');
+      const tracking = getData != null ? JSON.parse(getData) : false;
+      this.setTracking(tracking);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   handleDeviceScanner = () => {
     let a = DeviceInfo.getUniqueId();
@@ -124,13 +126,19 @@ class ContextProvider extends Component {
     const eventEmitter = new NativeEventEmitter(NativeModules.BLEAdvertiser);
 
     eventEmitter.addListener('onDeviceFound', (event) => {
-      console.log('onDeviceFound', event);
+      // console.log('onDeviceFound', event);
+
       if (event.serviceUuids) {
         for (let i = 0; i < event.serviceUuids.length; i++) {
+          // console.log(this.short(event.serviceUuids[i]));
           if (event.serviceUuids[i] && event.rssi > -80) {
-            console.log('Checking RSSI is greater than -80');
-            console.log(event.rssi);
-            console.log('Checking RSSI is greater than -80');
+            console.log(
+              'New Device found: ',
+              event.serviceUuids[i],
+              '  RSSI : ',
+              event.rssi,
+            );
+
             this.addDevice(
               event.serviceUuids[i],
               event.deviceName,
@@ -203,11 +211,7 @@ class ContextProvider extends Component {
   };
 
   short(str) {
-    return (
-      str.substring(0, 4) +
-      ' ... ' +
-      str.substring(str.length - 4, str.length)
-    ).toUpperCase();
+    return str.substring(19, str.length).toUpperCase();
   }
 
   addDevice(_uniqueid, _name, _mac, _rssi, _date) {
@@ -217,6 +221,7 @@ class ContextProvider extends Component {
         index = i;
       }
     }
+
     if (index < 0) {
       let dev = {
         uniqueid: _uniqueid,
@@ -228,7 +233,7 @@ class ContextProvider extends Component {
       };
 
       // Add new user to localstorage
-      this.handleNewUserContact(_uniqueid);
+      this.handleNewUserContact(this.short(_uniqueid));
 
       //
 
@@ -256,29 +261,35 @@ class ContextProvider extends Component {
     this.setState({isLoadingApp: value});
   };
 
-  setTracking = (val) => {
+  setTracking = async (val) => {
     if (val) {
       this.start();
     } else {
       this.stop();
     }
     this.setState({isTrackingEnable: val});
+    try {
+      const jsonValue = JSON.stringify(val);
+      await AsyncStorage.setItem('@isTrackingEnabled', jsonValue);
+    } catch (e) {
+      console.log(e);
+    }
     console.log('Tracking changed!');
   };
 
   handleNewUserContact = async (id) => {
-    console.log('New user saved on local storage: ', id);
     try {
       const getData = await AsyncStorage.getItem('@contactHistory');
-      const contactHistory = getData != null ? JSON.parse(getData) : null;
+      const contactHistory = getData != null ? JSON.parse(getData) : [];
       contactHistory.push({
         contacted_time: Date.now(),
         id: id,
       });
+      console.log('New user saved on local storage: ', id);
 
       this.setContactHistoryData(contactHistory);
     } catch (e) {
-      // save error
+      console.log(e);
     }
   };
 

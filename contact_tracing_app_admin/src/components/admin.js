@@ -14,9 +14,7 @@ export default function Admin() {
 
   return (
     <div>
-      {
-        // !isLoggedIn || !user ? <Redirect to="/" /> : null
-      }
+      {!isLoggedIn || !user ? <Redirect to="/" /> : null}
       <Navbar />
       <Switch>
         <Route exact path="/admin/adminRequests" component={AdminRequests} />

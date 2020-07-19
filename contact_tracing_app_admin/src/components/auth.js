@@ -20,9 +20,7 @@ export default function Auth() {
       className="container-fluid pt-5"
       style={{ backgroundColor: "#7294da" }}
     >
-      {
-        // isLoggedIn && user ? <Redirect to="/admin" /> : null
-      }
+      {isLoggedIn && user ? <Redirect to="/admin" /> : null}
       <div className="container-fluid h-50 text-center">
         <div className="row">
           <div

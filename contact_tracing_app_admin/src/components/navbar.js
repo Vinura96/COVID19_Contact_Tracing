@@ -16,9 +16,7 @@ export default function Navbar() {
       className="navbar fixed-top navbar-expand-md navbar-dark py-0 my-0"
       style={{ backgroundColor: "#7294da" }}
     >
-      {
-        // !isLoggedIn || !user ? <Redirect to="/" /> : null
-      }
+      {!isLoggedIn || !user ? <Redirect to="/" /> : null}
       <span className="navbar-brand mb-0 h1">Contact Tracking Admin</span>
       <button
         className="navbar-toggler"

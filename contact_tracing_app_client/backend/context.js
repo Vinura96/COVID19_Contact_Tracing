@@ -105,7 +105,7 @@ class ContextProvider extends Component {
     console.log("Appstate listener added");
     AppState.addEventListener('change', this._handleAppStateChange);
     // perform check when the component mounts
-    await this.checkDate();
+    this.checkDate();
   }
 
   componentWillUnmount () {
@@ -135,7 +135,7 @@ class ContextProvider extends Component {
     let savedDateString = await AsyncStorage.getItem('storedDate');
     if (savedDateString) {
 
-      if (moment(currentDateString).isAfter(savedDateString)) {
+      if (moment(currentDateString).isAfter(JSON.parse(savedDateString))) {
         // this is where you put the code that resets everything
         // clear the values that you have previously saved
         console.log("Clearing Daily the state of devices found");
@@ -143,7 +143,7 @@ class ContextProvider extends Component {
         // remember to save the new date
         try {
           console.log("Saving the new date");
-          await AsyncStorage.setItem('storedDate', currentDateString)
+          await AsyncStorage.setItem('storedDate', JSON.stringify(currentDateString))
         } catch (err) {
         }
       } else {
@@ -156,7 +156,7 @@ class ContextProvider extends Component {
       // do any other initial setup here
         try {
           console.log("initially storing the date");
-          await AsyncStorage.setItem('storedDate', currentDateString)
+          await AsyncStorage.setItem('storedDate', JSON.stringify(currentDateString))
         } catch (err) {
         }
     }

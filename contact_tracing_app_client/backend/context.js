@@ -13,7 +13,6 @@ import {NativeEventEmitter, NativeModules} from 'react-native';
 import BLEAdvertiser from 'react-native-ble-advertiser';
 import update from 'immutability-helper';
 import DeviceInfo from 'react-native-device-info';
-import moment from 'moment';
 
 import {PermissionsAndroid} from 'react-native';
 
@@ -103,6 +102,9 @@ class ContextProvider extends Component {
     this.getContactHistoryFromLocal();
     this.checkTrackingState();
     console.log("Appstate listener added");
+    nowdate = new Date();
+    console.log(nowdate.getHours());
+    console.log(JSON.stringify(nowdate));
     AppState.addEventListener('change', this._handleAppStateChange);
     // perform check when the component mounts
     this.checkDate();
@@ -129,13 +131,19 @@ class ContextProvider extends Component {
 
   checkDate = async () => {
     // create a string with the current date
-    let currentDateString = moment('YYYY-MM-DD') 
-    
+    let todaydate = new Date();
+    let currYear = JSON.stringify(todaydate.getFullYear());
+    let currMonth = JSON.stringify(todaydate.getMonth());
+    let currDate = JSON.stringify(todaydate.getDate());
     // get the value from storage
-    let savedDateString = await AsyncStorage.getItem('storedDate');
-    if (savedDateString) {
-
-      if (moment(currentDateString).isAfter(JSON.parse(savedDateString))) {
+    let savedYear = await AsyncStorage.getItem('storedYear');
+    let savedMonth = await AsyncStorage.getItem('storedMonth');
+    let savedDate = await AsyncStorage.getItem('storedDate');
+    if (savedDate) {
+      var a = currYear.localeCompare(savedYear);
+      var b = currMonth.localeCompare(savedMonth);
+      var c = currDate.localeCompare(savedDate);
+      if (a!=0 || b!=0 || c!=0) {
         // this is where you put the code that resets everything
         // clear the values that you have previously saved
         console.log("Clearing Daily the state of devices found");
@@ -143,20 +151,24 @@ class ContextProvider extends Component {
         // remember to save the new date
         try {
           console.log("Saving the new date");
-          await AsyncStorage.setItem('storedDate', JSON.stringify(currentDateString))
+          await AsyncStorage.setItem('storedDate', currDate);
+          await AsyncStorage.setItem('storedYear', currYear);
+          await AsyncStorage.setItem('storedMonth', currMonth);
         } catch (err) {
         }
       } else {
         console.log("Date is not changed");
-        // don't do anything as the time hasn't changed
-        // so we could really get rid of this else statement
+        console.log(currDate);
+        console.log("Date is not changedd");
       }
     } else {
       // save the time as this is the first time the app has launched
       // do any other initial setup here
         try {
-          console.log("initially storing the date");
-          await AsyncStorage.setItem('storedDate', JSON.stringify(currentDateString))
+          console.log("initially storing the dateeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+          await AsyncStorage.setItem('storedDate', currDate);
+          await AsyncStorage.setItem('storedYear', currYear);
+          await AsyncStorage.setItem('storedMonth', currMonth);
         } catch (err) {
         }
     }

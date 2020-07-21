@@ -93,7 +93,7 @@ class ContextProvider extends Component {
     uniqueid: '',
     devicesFound: [],
     formatedBlutoothID: '',
-    appState: AppState.currentState
+    appState: AppState.currentState,
   };
   componentDidMount() {
     this.authenticateUser();
@@ -101,37 +101,50 @@ class ContextProvider extends Component {
     this.handleDeviceScanner();
     this.getContactHistoryFromLocal();
     this.checkTrackingState();
-    console.log("Appstate listener added");
-    nowdate = new Date();
-    console.log(nowdate.getHours());
-    console.log(JSON.stringify(nowdate));
+    this.getdeviceListFromLocal();
+    console.log('Appstate listener added');
+    // nowdate = new Date();
+    // console.log(nowdate.getHours());
+    // console.log(JSON.stringify(nowdate));
     AppState.addEventListener('change', this._handleAppStateChange);
     // perform check when the component mounts
     this.checkDate();
+    // console.log('object');
+    // var dateDiff = new Date(new Date(Date.now()).toLocaleDateString());
+    // console.log(
+    //   (dateDiff - new Date(new Date('2020-07-18').toLocaleDateString())) /
+    //     (1000 * 60 * 60 * 24),
+    // );
+    // console.log('object');
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
+    this.setDevicelistLocal();
     // remove the listener
-    console.log("Appstate listener removed");
+    console.log('Appstate listener removed');
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
   _handleAppStateChange = async (nextAppState) => {
-    console.log("Appstate changed");
-    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+    console.log('Appstate changed');
+    if (
+      this.state.appState.match(/inactive|background/) &&
+      nextAppState === 'active'
+    ) {
       // app has come to the foreground
       // perform checks etc here
       await this.checkDate();
     }
     // update the appState
-    this.setState({ appState: nextAppState });
-    console.log("New Appstate is");
+    this.setState({appState: nextAppState});
+    console.log('New Appstate is');
     console.log(nextAppState);
-  }
+  };
 
   checkDate = async () => {
     // create a string with the current date
     let todaydate = new Date();
+    console.log(todaydate);
     let currYear = JSON.stringify(todaydate.getFullYear());
     let currMonth = JSON.stringify(todaydate.getMonth());
     let currDate = JSON.stringify(todaydate.getDate());
@@ -143,36 +156,36 @@ class ContextProvider extends Component {
       var a = currYear.localeCompare(savedYear);
       var b = currMonth.localeCompare(savedMonth);
       var c = currDate.localeCompare(savedDate);
-      if (a!=0 || b!=0 || c!=0) {
+      if (a != 0 || b != 0 || c != 0) {
         // this is where you put the code that resets everything
         // clear the values that you have previously saved
-        console.log("Clearing Daily the state of devices found");
-        this.setState({ devicesFound: [] });
+        console.log('Clearing Daily the state of devices found');
+        this.setState({devicesFound: []});
         // remember to save the new date
         try {
-          console.log("Saving the new date");
+          console.log('Saving the new date');
           await AsyncStorage.setItem('storedDate', currDate);
           await AsyncStorage.setItem('storedYear', currYear);
           await AsyncStorage.setItem('storedMonth', currMonth);
-        } catch (err) {
-        }
+        } catch (err) {}
       } else {
-        console.log("Date is not changed");
+        console.log('Date is not changed');
         console.log(currDate);
-        console.log("Date is not changedd");
+        console.log('Date is not changedd');
       }
     } else {
       // save the time as this is the first time the app has launched
       // do any other initial setup here
-        try {
-          console.log("initially storing the dateeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-          await AsyncStorage.setItem('storedDate', currDate);
-          await AsyncStorage.setItem('storedYear', currYear);
-          await AsyncStorage.setItem('storedMonth', currMonth);
-        } catch (err) {
-        }
+      try {
+        console.log(
+          'initially storing the dateeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+        );
+        await AsyncStorage.setItem('storedDate', currDate);
+        await AsyncStorage.setItem('storedYear', currYear);
+        await AsyncStorage.setItem('storedMonth', currMonth);
+      } catch (err) {}
     }
-  }
+  };
 
   checkTrackingState = async () => {
     try {
@@ -289,6 +302,7 @@ class ContextProvider extends Component {
   }
 
   addDevice(_uniqueid, _name, _mac, _rssi, _date) {
+    this.checkDate();
     let index = -1;
     for (let i = 0; i < this.state.devicesFound.length; i++) {
       if (this.state.devicesFound[i].uniqueid == _uniqueid) {
@@ -415,7 +429,28 @@ class ContextProvider extends Component {
       // save error
     }
 
-    console.log('Done.');
+    console.log('contactHistory saved to local.');
+  };
+
+  setDevicelistLocal = async () => {
+    try {
+      const jsonValue = JSON.stringify(this.state.devicesFound);
+      await AsyncStorage.setItem('@deviceList', jsonValue);
+    } catch (e) {
+      console.log(e);
+    }
+
+    console.log('deviceList saved to local.');
+  };
+
+  getdeviceListFromLocal = async () => {
+    try {
+      const getData = await AsyncStorage.getItem('@deviceList');
+      const deviceList = getData != null ? JSON.parse(getData) : [];
+      this.setState({devicesFound: deviceList});
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   setContactHistoryData = (data) => {
@@ -432,9 +467,11 @@ class ContextProvider extends Component {
     var index = 0;
     data.forEach((element) => {
       var dateDiff =
-        (Date.now() - element.contacted_time) / (1000 * 60 * 60 * 24);
-      if (dateDiff < 14 && dateDiff > 0) {
-        // console.log(dateDiff);
+        (new Date(new Date(Date.now()).toLocaleDateString()) -
+          new Date(new Date(element.contacted_time).toLocaleDateString())) /
+        (1000 * 60 * 60 * 24);
+      if (dateDiff < 14 && dateDiff > -1) {
+        console.log(dateDiff);
         contactHistoryArray.push({...element, key: `${index}`});
         contactHistoryData['data'][`${index++}`] = element;
         contactHistoryData['last14days'] += 1;
@@ -442,9 +479,9 @@ class ContextProvider extends Component {
           contactHistoryData['last7days'] += 1;
           if (dateDiff < 3) {
             contactHistoryData['last3days'] += 1;
-            if (dateDiff < 2 && dateDiff > 1) {
+            if (dateDiff == 1) {
               contactHistoryData['yesterday'] += 1;
-            } else if (dateDiff < 1) {
+            } else if (dateDiff == 0) {
               contactHistoryData['today'] += 1;
             }
           }
@@ -463,7 +500,7 @@ class ContextProvider extends Component {
   getContactHistoryFromLocal = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('@contactHistory');
-      const contactHistory = jsonValue != null ? JSON.parse(jsonValue) : null;
+      const contactHistory = jsonValue != null ? JSON.parse(jsonValue) : [];
 
       this.setContactHistoryData(contactHistory);
     } catch (e) {

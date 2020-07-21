@@ -70,13 +70,19 @@ export default function InfectedUsers() {
                   <div className="border-right border-gray col-2 p-2  overflow-hidden">
                     {item.phone}
                   </div>
-                  <div className="col-3 p-2  overflow-hidden">
-                    {item.count} ({" "}
-                    {new Date(
-                      item.contacted_details_uploaded_date
-                    ).toLocaleDateString()}
-                    )
-                  </div>
+                  {item.contactedUsers ? (
+                    <div className="col-3 p-2  overflow-hidden">
+                      {item.contactedUsers.length} ({" "}
+                      {new Date(
+                        item.contacted_details_uploaded_date
+                      ).toLocaleDateString()}
+                      )
+                    </div>
+                  ) : (
+                    <div className="col-3 p-2  overflow-hidden">
+                      Not Uploaded
+                    </div>
+                  )}
                 </div>
               </Link>
             ))}

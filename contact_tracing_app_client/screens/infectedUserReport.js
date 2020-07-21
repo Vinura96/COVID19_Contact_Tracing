@@ -110,6 +110,7 @@ export default function InfectedUserReportModal({
                   onPress={() => {
                     uploadContactedPersonHistory();
                     reportAsInfected();
+                    setInfectedUserModalOpen(false);
                   }}
                   style={
                     checkBoxselected

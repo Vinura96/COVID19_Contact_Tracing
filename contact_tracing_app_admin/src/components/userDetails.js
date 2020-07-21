@@ -193,9 +193,9 @@ export default function UserDetails(props) {
                   <div className="border-right border-gray col-2 p-2  overflow-hidden">
                     {item.phone}
                   </div>
-                  {item.contactedUsers ? (
+                  {item.contacted_details_uploaded_date ? (
                     <div className="col-3 p-2  overflow-hidden">
-                      {item.contactedUsers.length} ({" "}
+                      {item.contactedUsers ? item.contactedUsers.length : 0} ({" "}
                       {new Date(
                         item.contacted_details_uploaded_date
                       ).toLocaleDateString()}
